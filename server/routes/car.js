@@ -7,7 +7,7 @@ const app = express();
 const { tokenVerify, adminRoleVerify } = require('../middlewares/authentication');
 
 app.get('/car', (req, res)=>{
-    Car.find({}, 'title engine')
+    Car.find({})
         .exec( (err, cars)=>{
             if ( err ) {
                 return res.status(400).json({
@@ -21,6 +21,33 @@ app.get('/car', (req, res)=>{
             });
         });
 });
+
+app.get('/car/:id', tokenVerify, (req, res) => {
+    let id = req.params.id;
+
+    Car.findById(id)
+            .exec( (err, carDB) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        err
+                    });
+                }
+                if (!carDB) {
+                    return res.status(400).json({
+                        ok: false,
+                        err: {
+                            message: 'ID not exist'
+                        }
+                    });
+                }
+                res.json({
+                    ok: true,
+                    car: carDB
+                });
+            });
+});
+
 
 app.post('/car', [tokenVerify, adminRoleVerify], (req, res)=> {
 

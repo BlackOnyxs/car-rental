@@ -149,7 +149,7 @@ app.put('/reserve/:id', [tokenVerify, adminRoleVerify], (req, res) => {
 });
 
 
-app.delete('/reserve/:id', [tokenVerify, adminRoleVerify], (req, res) => {
+app.delete('/reserve/:id', tokenVerify, (req, res) => {
 
     let reserveId = req.params.id;
 

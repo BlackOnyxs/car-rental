@@ -1,4 +1,5 @@
 const express = require('express');
+
 const fileUpload = require('express-fileupload');
 const app = express();
 
@@ -11,11 +12,11 @@ cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
-});
+})
 
 app.use( fileUpload({ useTempFiles: true }) );
 
-const { tokenVerify, adminRoleVerify } = require('../middlewares/authentication');
+const { tokenVerify } = require('../middlewares/authentication');
 
 const User = require('../models/user');
 const Car = require('../models/car');
@@ -24,10 +25,9 @@ app.put('/upload/:type/:id', tokenVerify, (req, res) => {
 
     let type = req.params.type;
     let id   = req.params.id;
-    console.log(process.env.CLOUDINARY_CLOUD_NAME);
 
     if( !req.files ){
-        return res.status(400).json({
+        return res.status(400).json({ 
             ok: false,
             message: 'No files were uploaded'
         });

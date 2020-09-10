@@ -25,3 +25,9 @@ if( process.env.NODE_ENV === 'dev'){
 }
 
 process.env.URLDB = urlDB;
+//================
+// Cloudinary
+//================
+process.env.CLOUDINARY_CLOUD_NAME = 'dyjsa002n';
+process.env.CLOUDINARY_API_KEY = '195825649292767';
+process.env.CLOUDINARY_API_SECRET = 'd5Vm7SNGwrSsaZI5PHFegBGAvSY';

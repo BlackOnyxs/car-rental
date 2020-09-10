@@ -41,6 +41,33 @@ app.get('/user', tokenVerify, (req, res) => {
         });
 });
 
+app.get('/user/:id', [tokenVerify, adminRoleVerify], (req, res) => {
+    let id = req.params.id;
+
+    User.findById(id)
+            .exec( (err, userDB) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        err
+                    });
+                }
+                if (!userDB) {
+                    return res.status(400).json({
+                        ok: false,
+                        err: {
+                            message: 'ID not exist'
+                        }
+                    });
+                }
+                res.json({
+                    ok: true,
+                    user: userDB
+                });
+            });
+});
+
+
 app.post('/user', (req, res) => {
 
     let body = req.body;

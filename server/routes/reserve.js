@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 
 let Reserve = require('../models/reserve');
+let User = require('../models/user');
 const { tokenVerify, adminRoleVerify } = require('../middlewares/authentication');
 
 app.get('/reserve', tokenVerify, (req, res) => {
@@ -83,10 +84,32 @@ app.post('/reserve', tokenVerify, (req, res) => {
             });
         }
 
-        res.json({
-            ok: true,
-            reserve: reserveDB
-        });
+        User.findById(userId, (err, userDB) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+            
+            userDB.history.push(reserveDB._id);
+
+            userDB.save((err, userSaved) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        err
+                    });
+                }
+                res.json({
+                    ok: true,
+                    reserve: reserveDB
+                });
+            });
+
+            
+        });  
 
     });
 });

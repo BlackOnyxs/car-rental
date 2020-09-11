@@ -37,11 +37,11 @@ let userSchema = new Schema({
         type: String,
         required: [ true, 'The cellphone is required.']
     },
-    history: {
+    history: [{
         type: Schema.Types.ObjectId, 
         ref: 'Reserve',
         require: false
-    },
+    }],
     role: {
         type: String,
         default: 'USER_ROLE',

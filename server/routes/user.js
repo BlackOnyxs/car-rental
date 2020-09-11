@@ -41,10 +41,11 @@ app.get('/user', tokenVerify, (req, res) => {
         });
 });
 
-app.get('/user/:id', [tokenVerify, adminRoleVerify], (req, res) => {
+app.get('/user/:id', tokenVerify, (req, res) => {
     let id = req.params.id;
 
     User.findById(id)
+            .populate('reserve', 'id totalPrice pickupDate returnDate')
             .exec( (err, userDB) => {
                 if (err) {
                     return res.status(500).json({

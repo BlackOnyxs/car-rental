@@ -22,7 +22,7 @@ app.get('/car', (req, res)=>{
         });
 });
 
-app.get('/car/:id', tokenVerify, (req, res) => {
+app.get('/car/:id', (req, res) => {
     let id = req.params.id;
 
     Car.findById(id)
